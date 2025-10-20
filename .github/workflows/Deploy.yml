@@ -1,0 +1,36 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to FTP
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get latest code
+        uses: actions/checkout@v4
+     
+      - name: install node.js
+        uses: actions/setup-node@v4
+
+        with:
+          node-version: 18.20.3  # Utiliser explicitement Node.js version 16
+
+      - name: Install npm package
+        run: npm install
+
+      - name: Build Project
+        run: npm run build
+
+      - name: sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: 165.140.69.88
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          protocol: FTPS
+          local-dir: ./dist/

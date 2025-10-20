@@ -1,0 +1,7 @@
+const STATUT_ALIMENTATION = {
+    VALIDE: 0,
+    EN_ATTENTE: 1,
+    REJETE: 2,
+   
+}
+export default STATUT_ALIMENTATION

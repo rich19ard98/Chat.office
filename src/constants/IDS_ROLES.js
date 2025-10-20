@@ -1,0 +1,19 @@
+
+const IDS_ROLES = {
+    ADMINISTRATION: 1,
+    PARAMETRE: 2,
+    RAPPORTS: 3,
+    FRAISADHESION: 4,
+    COTISATION: 5,
+    CREDIT: 6,
+    PLANCOMPTABLE: 7,
+    GERER: 8,
+    COMPTABILITES: 9,
+    BILAN: 10,
+    PRESENCE: 11,
+    RESULTAT:12
+
+}
+
+export default IDS_ROLES
+

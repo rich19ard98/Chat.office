@@ -1,0 +1,38 @@
+
+a.search-link {
+          transition: 200ms background-color ease-in-out;
+}
+.search-link:hover, .search-link:focus {
+          background-color: #f0f0f0;
+}
+.search-link .icon {
+          color: #777;
+}
+.search-link .link_title {
+          color: #333;
+          font-weight: 500;
+          font-size: 16px;
+}
+.search-link .link_subtitle {
+          color: #889096;
+          font-size: 13px;
+}
+.search-link-grouper {
+          color: #889096;
+          font-size: 13px;
+}
+.searchContent .p-dialog-header-icons {
+          display: none;
+}
+
+#mobileSearch {
+          display: none;
+}
+@media screen and (max-width: 1200px) {
+          .searchbar-container {
+                    display: none !important;
+          }
+          #mobileSearch {
+                    display: block;
+          }
+}
