@@ -10,7 +10,7 @@ if (hostname === "nodebu.inoviatech.com") {
 } else if (hostname === "prototype.nodebu.inoviatech.com") {
     SOCKET_URL = "https://api.prototype.nodebu.inoviatech.com";
 } else if (hostname === "localhost") {
-    SOCKET_URL = "http://169.254.94.169:5550"; // dev local http://169.254.94.169:5550
+    SOCKET_URL = "http://169.254.94.169:7000"; // dev local http://169.254.94.169:5550
 } else {
     SOCKET_URL = window.location.origin; // fallback générique
 }

@@ -1,0 +1,129 @@
+/* 📱 Structure principale */
+.page-message {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* prend tout l’écran */
+  background: #f8f9fa;
+}
+
+/* 🧩 En-tête */
+.message-header {
+  padding: 1rem;
+  background: white;
+  border-bottom: 1px solid #ddd;
+  font-weight: bold;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* 💬 Corps de la conversation */
+.message-body {
+  flex: 1; /* prend tout l’espace restant */
+  padding: 1rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth; /* scroll fluide vers le bas */
+  background: #f8f9fa;
+}
+
+/* 💭 Message commun */
+.message {
+  padding: 10px 15px;
+  border-radius: 12px;
+  max-width: 70%;
+  word-wrap: break-word;
+  transition: all 0.3s ease;
+  animation: fadeIn 0.3s ease;
+}
+
+/* ✉️ Message reçu */
+.message.received {
+  background: #e9ecef;
+  align-self: flex-start;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* 🚀 Message envoyé */
+.message.sent {
+  background: #007bff;
+  color: white;
+  align-self: flex-end;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+/* 🔄 Animation d’apparition */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ✍️ Zone de saisie */
+.message-input {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background: white;
+  border-top: 1px solid #ddd;
+  flex-shrink: 0;
+  position: sticky; /* reste visible en bas */
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+}
+
+/* 📝 Textarea */
+.message-input textarea {
+  flex: 1;
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  margin-right: 10px;
+  min-height: 50px;
+  font-family: inherit;
+  font-size: 15px;
+}
+
+.message-input textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.message-input textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+/* 🖱️ Bouton d’envoi */
+.message-input button {
+  background: #007bff;
+  border: none;
+  color: white;
+  border-radius: 10px;
+  padding: 8px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.3s, transform 0.1s;
+}
+
+.message-input button:hover {
+  background: #0056b3;
+}
+
+.message-input button:active {
+  transform: scale(0.97);
+}

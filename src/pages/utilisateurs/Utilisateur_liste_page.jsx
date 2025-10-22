@@ -300,7 +300,7 @@ export default function Utilisateur_liste_page() {
   const fetchUtilisateurs = useCallback(async () => {
     try {
       setLoading(true);
-      const baseurl = `/administration/utilisateurs/fetch?rows=100000000&idprofile=${PROFILS.SUPER_ADMIN}`;
+      const baseurl = `/administration/utilisateurs/fetch?}`;
       var url = baseurl;
       for (let key in lazyState) {
         const value = lazyState[key];

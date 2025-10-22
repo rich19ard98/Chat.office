@@ -10,7 +10,7 @@ export const SOCKET_URL =
         : hostname === "prototype.nodebu.inoviatech.com"
             ? "https://api.prototype.nodebu.inoviatech.com"
             : hostname === "localhost"
-                ? "http://169.254.94.169:5550"
+                ? "http://169.254.94.169:7000"
                 : null; // fallback local
 
 // ⚡ Création du socket singleton (optionnel si tu veux)

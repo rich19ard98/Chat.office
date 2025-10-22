@@ -8,7 +8,7 @@ import removeUserDataAndCaches from '../utils/removeUserDataAndCaches';
 export const API_URL = false
   ? "https://api.banguka.inoviatech.com"
   // ? "https://api.prototype.nodebu.inoviatech.com"
-  : "http://169.254.94.169:5550"
+  : "http://169.254.94.169:7000"
 
 const initialOptions = {
   method: 'GET',

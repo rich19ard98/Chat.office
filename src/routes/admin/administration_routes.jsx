@@ -132,8 +132,17 @@ const Penalite_Cotisation_retard_liste = lazy(() => import("../../pages/parametr
 const Penalite_Cotisation_retard_update = lazy(() => import("../../pages/parametres_financieres/Penalite_Cotisation_retard_update"));
 const Create_nantissement = lazy(() => import("../../pages/credits/Create_nantissement"));
 const Nantissement_listes_pages = lazy(() => import("../../pages/credits/Nantissement_listes_pages"));
+const PageEcrireMessage = lazy(() => import("../../pages/messages/PageEcrireMessage"));
+
+const Createaccount = lazy(() => import("../../pages/utilisateurs/Createaccount"));
 
 export const administration_routes_items = {
+  //messages
+    PageEcrireMessage: {
+    path: "messages/:id", // ✅ on ajoute le paramètre :id
+    name: "Nouveau message",
+    component: PageEcrireMessage,
+  },
   //Nantissements
   Create_nantissement: {
     path: "Nantissements/add",
@@ -644,6 +653,11 @@ export const administration_routes_items = {
     path: "utilisateurs/new",
     name: "Nouveau ",
     component: Utilisateur_add_page,
+  },
+    Createaccount: {
+    path: "Createaccount/new",
+    name: "Nouveau ",
+    component: Createaccount,
   },
   edit_utilisateurs: {
     path: "utilisateurs/edit/:ID_UTILISATEUR",
