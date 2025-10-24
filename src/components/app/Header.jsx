@@ -7,7 +7,7 @@ import NotificationPanel from "./NotificationPanel";
 import moment from 'moment'
 import { Badge } from 'primereact/badge';
 import BreadCrumb from "./BreadCrumb";
-import { useRef, useState, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SlideMenu } from 'primereact/slidemenu';
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,9 +43,12 @@ const AppDateTime = () => {
 }
 
 export default function Header() {
+    const { id: otherUserId } = useParams(); // id de l'autre utilisateur (pas conversation)
     const menu = useRef(null);
     const user = useSelector(userSelector)
-    
+    const [autreUtilisateur, setAutreUtilisateur] = useState(null);
+    const conversationId = otherUserId; // pour chat 1:1, la conversation = autre utilisateur
+
     // Dans ton composant Header
     const [notifications, setNotifications] = useState([]); // récupérées du backend via fetch ou websocket
     const [showNotifPanel, setShowNotifPanel] = useState(false);
@@ -86,6 +89,29 @@ export default function Header() {
             accept: handleAccept,
         });
     };
+    const fetchUtilisateurs = useCallback(async () => {
+        if (!otherUserId) return; // pas d'id, rien à faire
+
+        try {
+            const baseurl = `/administration/utilisateurs/fetch?Receiver=${otherUserId}`;
+            const res = await fetchApi(baseurl);
+            const data = res.result.data || [];
+            console.log({ data });
+
+            if (data.length > 0) {
+                setAutreUtilisateur(data[0]);
+            } else {
+                setAutreUtilisateur(null);
+            }
+        } catch (error) {
+            console.error(error);
+            setAutreUtilisateur(null);
+        } finally {
+        }
+    }, [otherUserId]); // 🔹 dépendance = déclenchement si useParams change
+    useEffect(() => {
+        fetchUtilisateurs();
+    }, [fetchUtilisateurs]);
 
     const fetchNotifications = async () => {
         try {
@@ -224,12 +250,6 @@ export default function Header() {
             }
         },
     ];
-
-    // useEffect(() => {
-    //     if (user?.IMAGE) {
-    //         setImageSrc(`${user.IMAGE}?t=${Date.now()}`); // Force la mise à jour en contournant le cache
-    //     }
-    // }, [user.IMAGE]); // Réagit aux changements de l'image dans Redux
     const [imageError, setImageError] = useState(false);
 
     const hasValidImage = user?.IMAGE && !imageError;
@@ -244,15 +264,43 @@ export default function Header() {
 
 
                 <div className="d-flex align-items-center flex-1">
-                    <Button size="small" severity="secondary" outlined style={{ color: "black", width: 40, height: 40, border: "none" }} rounded className="p-2 mr-2" id="mobileSidebarOpener" onClick={e => {
-                        e.preventDefault()
-                        setAsideVisible(true)
-                    }}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="black" className="bi bi-list" viewBox="0 0 16 16">
-                            <path fillRule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
-                        </svg>
-                    </Button>
-                  
+                    <div
+                        className="message-header flex-end"
+                        style={{ display: "flex", alignItems: "center", gap: "10px" }}
+                    >
+                        {autreUtilisateur ? (
+                            <>
+                                {autreUtilisateur.IMAGE ? (
+                                    <img
+                                        src={autreUtilisateur.IMAGE}
+                                        alt={`${autreUtilisateur.NOM} ${autreUtilisateur.PRENOM}`}
+                                        style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+                                    />
+                                ) : (
+                                    <div
+                                        style={{
+                                            width: "40px",
+                                            height: "40px",
+                                            borderRadius: "50%",
+                                            backgroundColor: "#0065d1ff",
+                                            color: "#000000ff",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            fontWeight: "bold",
+                                            fontSize: "16px",
+                                            textTransform: "uppercase"
+                                        }}
+                                    >
+                                        {autreUtilisateur.NOM ? autreUtilisateur.NOM.charAt(0) : "U"}
+                                    </div>
+                                )}
+                                <span>{`${autreUtilisateur.NOM || "Nom"} ${autreUtilisateur.PRENOM || ""}`}</span>
+                            </>
+                        ) : (
+                            null)}
+                    </div>
+
                     <BreadCrumb />
                 </div>
 

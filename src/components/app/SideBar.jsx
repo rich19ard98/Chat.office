@@ -5,7 +5,7 @@ import { confirmDialog } from "primereact/confirmdialog";
 import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { Avatar } from "primereact/avatar";
-import Logo from "../../../public/images/Chat.png";
+import Logo from "../../../public/images/chat.png";
 import "../../styles/app/sidebar.css";
 import { encodeId } from "../../utils/IdEncryption";
 import { userSelector } from "../../store/selectors/userSelector";

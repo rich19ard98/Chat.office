@@ -1,4 +1,4 @@
-import BANGUKA from '/images/Banguka.jpg'
+import BANGUKA from '/images/chat.png'
 import Sofini from '/images/sofini.png'
 import inovia from '/images/inovia.png'
 import "../../styles/app/welcome/login.css"
@@ -194,12 +194,12 @@ export default function LoginPage() {
                             <div className="align-self-center w-75 d-flex align-items-center flex-column form_left_container">
                                 <div className="cedina-logo d-flex align-items-center">
                                     <div className="logo_container" style={{ height: '80px', width: '150px' }}>
-                                        <img src={BANGUKA} alt="BANGUKA"
+                                        <img src={BANGUKA} alt="Chat"
                                         // className="w-100 h-100 object-fit-cover d-block m-auto"
                                         />
                                     </div>
                                     <div className="block ml-2">
-                                        <h5 className="mb-1">BANGUKA</h5>
+                                        <h5 className="mb-1">Chatting</h5>
                                         {/* <div className="text-muted text-sm" style={{ fontSize: 12 }}> Centre de sante</div> */}
                                     </div>
                                 </div>
