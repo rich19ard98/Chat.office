@@ -1,14 +1,29 @@
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="shortcut icon" href="/images/chat.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Richard chat</title>
+    <title>BANGUKA</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/assets/icons/icon-512x512.png" />
+
+    <!-- Manifest PWA -->
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Apple Touch Icon (iOS) -->
+    <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png" />
+
+    <!-- Couleur de thème (barre mobile et splash screen) -->
+    <meta name="theme-color" content="#0d6efd" />
+
+    <!-- SEO (optionnel mais conseillé) -->
+    <meta
+      name="description"
+      content="Application de chat."
+    />
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
