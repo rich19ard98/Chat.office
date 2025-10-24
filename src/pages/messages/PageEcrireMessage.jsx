@@ -7,6 +7,7 @@ import fetchApi from "../../helpers/fetchApi";
 import { useDispatch, useSelector } from "react-redux";
 import { userSelector } from "../../store/selectors/userSelector";
 import { socket } from "../../helpers/fetchsocket";
+import Header from "../../components/app/Header";
 
 export default function PageEcrireMessage() {
     const { id: otherUserId } = useParams(); // id de l'autre utilisateur (pas conversation)
@@ -33,8 +34,6 @@ export default function PageEcrireMessage() {
         try {
             setLoading(true);
             const baseurl = `/administration/utilisateurs/fetch?Receiver=${otherUserId}`;
-            console.log("Fetching utilisateur pour ID :", otherUserId);
-
             const res = await fetchApi(baseurl);
             const data = res.result.data || [];
             if (data.length > 0) {
@@ -64,7 +63,6 @@ export default function PageEcrireMessage() {
 
             const res = await fetchApi(baseurl);
             const data = res.result || [];
-            console.log({ res });
             setMessages(data)
 
         } catch (error) {
@@ -73,11 +71,11 @@ export default function PageEcrireMessage() {
         } finally {
             setLoading(false);
         }
-    }, []); // 🔹 dépendance = déclenchement si useParams change
+    }, [conversationId]); // 🔹 dépendance = déclenchement si useParams change
 
     useEffect(() => {
         fetchMessages();
-    }, []);
+    }, [conversationId]);
     const fetchCreditRef = useRef((silent = false, forceRefresh = false) => { });
 
     useEffect(() => {
@@ -168,35 +166,17 @@ export default function PageEcrireMessage() {
             form.append("RECEIVER_ID", conversationId);
             form.append("CONTENT", message);
             form.append("TYPE", files.length > 0 ? "file" : "text");
-
             files.forEach((file) => form.append("FILES", file));
-
             if (conversationId) {
                 form.append("CONVERSATION_ID", conversationId);
             } else {
                 form.append("RECEIVER_ID", otherUserId);
             }
-
             const res = await fetchApi("/messages/messages/create", {
                 method: "POST",
                 body: form,
             });
-
-            // if (res.statusCode === 201) {
-            //     setMessage("");
-            //     setFiles([]);
-            //     fetchMessages(conversationId);
-            //     dispatch(
-            //         setToastAction({
-            //             severity: "success",
-            //             summary: "Message envoyé",
-            //             detail: "Votre message a été envoyé avec succès",
-            //             life: 3000,
-            //         })
-            //     );
-            // } else {
-            //     throw new Error("Impossible d'envoyer le message");
-            // }
+            setMessage("");
         } catch (error) {
             console.error(error);
             dispatch(
@@ -211,6 +191,12 @@ export default function PageEcrireMessage() {
             setIsSubmitting(false);
         }
     };
+    useEffect(() => {
+        if (autreUtilisateur && autreUtilisateur.ID_UTILISATEUR) {
+            fetchMessages(autreUtilisateur.ID_UTILISATEUR);
+        }
+    }, [autreUtilisateur]);
+
 
     // 🟢 Upload de fichier
     const handleFileChange = (e) => setFiles(Array.from(e.target.files));
@@ -219,26 +205,7 @@ export default function PageEcrireMessage() {
         <div className="page-message">
             {/* Header */}
             {/* Header */}
-            <div
-                className="message-header flex-end"
-                style={{ display: "flex", alignItems: "center", gap: "10px" }}
-            >
-                {autreUtilisateur ? (
-                    <>
-                        <img
-                            src={autreUtilisateur.IMAGE || "/images/default-user.png"}
-                            alt={`${autreUtilisateur.NOM} ${autreUtilisateur.PRENOM}`}
-                            style={{ width: "40px", height: "40px", borderRadius: "50%" }}
-                        />
-                        <span>{`${autreUtilisateur.NOM || "Nom"} ${autreUtilisateur.PRENOM || ""}`}</span>
-                    </>
-                ) : (
-                    <span>Utilisateur</span>
-                )}
-            </div>
-
-
-
+            <Header/>
             {/* Messages */}
             <div className="message-body">
                 {messages.map((msg) => (
@@ -253,17 +220,78 @@ export default function PageEcrireMessage() {
             </div>
 
             {/* Footer fixe */}
-            <div className="message-input">
-                <textarea
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Écrire votre message..."
-                    rows={2}
-                />
-                <button onClick={handleSend} disabled={isSubmitting}>
-                    {isSubmitting ? "Envoi..." : "Envoyer"}
-                </button>
-            </div>
+         <div className="message-input" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+    <textarea
+        value={message}
+        onChange={(e) => setMessage(e.target.value)}
+        placeholder="Écrire votre message..."
+        rows={1}
+        style={{
+            flex: 1,
+            borderRadius: "25px",
+            border: "1px solid #ccc",
+            padding: "8px 16px",
+            resize: "none",
+        }}
+    />
+
+    <input
+        id="file-upload"
+        type="file"
+        multiple
+        onChange={handleFileChange}
+        style={{ display: "none" }}
+    />
+
+    <button
+        onClick={handleSend}
+        disabled={isSubmitting || (!message.trim() && files.length === 0)}
+        style={{
+            width: "40px",
+            height: "40px",
+            borderRadius: "50%",
+            backgroundColor: "#25D366",
+            border: "none",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: "pointer",
+        }}
+    >
+        {isSubmitting ? (
+            <div className="loader" style={{
+                border: "2px solid #fff",
+                borderTop: "2px solid transparent",
+                borderRadius: "50%",
+                width: "16px",
+                height: "16px",
+                animation: "spin 1s linear infinite"
+            }} />
+        ) : (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="white"
+                viewBox="0 0 16 16"
+            >
+                <path d="M15.854.146a.5.5 0 0 0-.707 0L.146 15.146a.5.5 0 0 0 .708.708L16 1.207a.5.5 0 0 0 0-.708z"/>
+                <path d="M.5 15.5a.5.5 0 0 0 .5-.5V10a.5.5 0 0 1 1 0v5a.5.5 0 0 0 .5.5h5a.5.5 0 0 1 0 1h-5a1.5 1.5 0 0 1-1.5-1.5z"/>
+            </svg>
+        )}
+    </button>
+</div>
+
+{/* Ajouter ce CSS global pour le loader */}
+<style>
+{`
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+`}
+</style>
+
         </div>
     );
 }
